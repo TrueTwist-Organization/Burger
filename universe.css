@@ -1,0 +1,481 @@
+
+/* ━━━ FLOATING BURGER UNIVERSE ━━━ */
+.sec-menu-universe {
+    display: block !important;
+    flex-direction: column;
+    position: relative;
+    background-color: #F5ECD7;
+    padding: 100px 20px;
+    overflow: hidden;
+    color: #2C1810;
+    cursor: none; /* custom cursor */
+}
+
+/* Ambient Backgrounds */
+.universe-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(0,0,0,0.04) 2px, transparent 2px);
+    background-size: 30px 30px;
+}
+.universe-vignette {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 150px rgba(0,0,0,0.1);
+}
+.blob-orange {
+    position: absolute; bottom: -10%; left: -10%;
+    width: 600px; height: 600px;
+    background: #E67E22;
+    border-radius: 50%;
+    filter: blur(150px);
+    opacity: 0.15;
+    z-index: 0;
+}
+.blob-red {
+    position: absolute; top: -10%; right: -10%;
+    width: 600px; height: 600px;
+    background: #C0392B;
+    border-radius: 50%;
+    filter: blur(150px);
+    opacity: 0.15;
+    z-index: 0;
+}
+.bg-lineart {
+    position: absolute;
+    opacity: 0.08;
+    animation: slowRotate 60s linear infinite;
+    z-index: 0;
+    width: 300px;
+}
+@keyframes slowRotate { 100% { transform: rotate(360deg); } }
+
+/* Marquee */
+.menu-marquee {
+    position: absolute;
+    top: 0; left: 0; width: 100%;
+    background: #C0392B;
+    color: #FFF8F0;
+    padding: 10px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    z-index: 10;
+    box-shadow: 0 4px 15px rgba(192,57,43,0.3);
+}
+.marquee-content {
+    display: inline-block;
+    animation: marquee 20s linear infinite;
+}
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* Section Title */
+.universe-header-container {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 80px;
+}
+.title-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #C0392B;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    animation: bounceBadge 2s infinite;
+}
+@keyframes bounceBadge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.title-badge .flame { margin-left: 5px; animation: flicker 0.5s infinite alternate; }
+@keyframes flicker { 0% { opacity: 0.8; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); } }
+
+.universe-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    color: #C0392B;
+    text-shadow: 4px 4px 0px rgba(180,50,20,0.15);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+}
+.universe-title .char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-50px);
+}
+.floating-burger-title {
+    font-size: 3rem;
+    margin-left: 15px;
+    animation: floatTitleRotate 4s ease-in-out infinite;
+    display: inline-block;
+}
+@keyframes floatTitleRotate { 0%, 100% { transform: translateY(0) rotate(-10deg); } 50% { transform: translateY(-10px) rotate(10deg); } }
+
+.brush-stroke {
+    width: 300px;
+    margin: -20px auto 0 auto;
+    display: block;
+}
+.brush-stroke path {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+/* Cards Horizontal Scroll */
+.universe-cards-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.marquee-track {
+    width: max-content;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused !important;
+}
+
+@keyframes scrollMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Translate exactly by half the width (which is 1 full set of cards) */
+        transform: translateX(-50%);
+    }
+}
+
+/* The Card */
+.u-card {
+    min-width: 320px;
+    background: #FFFDF8;
+    border-radius: 28px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.04), 0 12px 24px rgba(180,80,20,0.10), 0 32px 48px rgba(180,80,20,0.06);
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity: 0;
+    transform: translateY(60px) rotate(8deg);
+    margin-top: 50px;
+}
+.u-card:nth-child(odd) { transform: translateY(0) rotate(-1.5deg); }
+.u-card:nth-child(even) { transform: translateY(0) rotate(1.5deg); }
+
+/* Card Hover */
+.u-card:hover {
+    transform: translateY(-16px) rotate(0deg) !important;
+    box-shadow: 0 40px 80px rgba(180,80,20,0.25), inset 0 0 0 2px rgba(230,126,34,0.5);
+    background: radial-gradient(circle at center, #FFFDF8 0%, #FFEFE5 100%);
+    z-index: 10;
+}
+
+/* Hero Burger Image */
+.u-burger-wrapper {
+    position: relative;
+    margin-top: -80px;
+    margin-bottom: 20px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.u-burger-img {
+    width: 220px;
+    filter: drop-shadow(0 20px 10px rgba(0,0,0,0.2));
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    animation: floatBurger 3s ease-in-out infinite;
+}
+@keyframes floatBurger { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+
+/* Stagger float animations for cards */
+.u-card:nth-child(1) .u-burger-img { animation-delay: 0s; }
+.u-card:nth-child(2) .u-burger-img { animation-delay: 0.5s; }
+.u-card:nth-child(3) .u-burger-img { animation-delay: 1.0s; }
+.u-card:nth-child(4) .u-burger-img { animation-delay: 1.5s; }
+
+/* Fake shadow below burger */
+.u-burger-shadow {
+    position: absolute;
+    bottom: -10px; left: 50%;
+    transform: translateX(-50%);
+    width: 140px; height: 20px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 70%);
+    transition: all 0.5s;
+}
+
+.u-card:hover .u-burger-img {
+    transform: scale(1.08) translateY(-12px);
+    filter: drop-shadow(0 30px 15px rgba(0,0,0,0.3));
+    animation-play-state: paused;
+}
+.u-card:hover .u-burger-shadow {
+    width: 160px; opacity: 0.5;
+}
+
+/* Steam Effect */
+.u-steam {
+    position: absolute;
+    top: -20px;
+    width: 10px; height: 30px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    filter: blur(8px);
+    opacity: 0;
+    transition: all 0.5s;
+}
+.s1 { left: 40%; animation-delay: 0s; }
+.s2 { left: 50%; animation-delay: 0.3s; }
+.s3 { left: 60%; animation-delay: 0.6s; }
+
+.u-card:hover .u-steam {
+    animation: riseSteam 2s infinite ease-in;
+}
+@keyframes riseSteam { 0% { transform: translateY(0) scale(1); opacity: 0; } 50% { opacity: 0.8; } 100% { transform: translateY(-40px) scale(2); opacity: 0; } }
+
+/* Card Info */
+.u-card-info { text-align: center; }
+.u-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2C1810;
+    margin-bottom: 10px;
+    text-decoration: none;
+    display: block;
+}
+.u-divider {
+    height: 2px; width: 0;
+    background: #E67E22;
+    margin: 0 auto 15px auto;
+    transition: width 0.4s ease;
+}
+.u-card:hover .u-divider { width: 50px; }
+
+/* Price Slot Machine */
+.u-price-wrapper {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #C0392B;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+.u-price-currency { font-size: 1.2rem; margin-right: 2px; }
+.u-price-val {
+    display: inline-block;
+    overflow: hidden;
+    height: 2.2rem;
+    line-height: 2.2rem;
+}
+
+/* Flavor Tags */
+.u-flavor-tags {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    opacity: 0.7;
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+}
+.u-card:hover .u-flavor-tags { opacity: 1; transform: translateY(0); }
+.u-tag {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 50px;
+    background: rgba(230,126,34,0.1);
+    color: #E67E22;
+    font-weight: 600;
+}
+
+/* Indicators */
+.u-indicators {
+    margin-bottom: 25px;
+    text-align: left;
+}
+.u-ind-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    margin-bottom: 5px;
+    color: #7F8C8D;
+}
+.u-percentage {
+    font-weight: 700;
+    color: #2C1810;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+.u-ind-row.spice .u-percentage { color: #C0392B; }
+.u-ind-row.taste .u-percentage { color: #E67E22; }
+.u-ind-row.juice .u-percentage { color: #F39C12; }
+
+.u-card:hover .u-percentage { transform: scale(1.1); }
+
+/* Add to Cart Button */
+.u-btn-cart {
+    width: 100%;
+    padding: 16px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #C0392B, #E74C3C);
+    color: white;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+}
+.u-btn-icon { width: 0; opacity: 0; overflow: hidden; transition: all 0.3s; white-space: nowrap; }
+.u-btn-cart:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(192,57,43,0.3);
+}
+.u-btn-cart:hover .u-btn-icon { width: 20px; opacity: 1; margin-right: 8px; }
+
+/* Button Click sequence */
+.u-btn-cart.clicked { animation: btnCompress 0.2s forwards; }
+@keyframes btnCompress { 50% { transform: scale(0.94); } 100% { transform: scale(1); } }
+.u-btn-cart.loading { pointer-events: none; }
+.u-btn-cart.loading .u-btn-text, .u-btn-cart.loading .u-btn-icon { display: none; }
+.u-btn-cart.loading::after { content: '🍔'; animation: spin 0.8s linear infinite; }
+.u-btn-cart.success { background: #27AE60 !important; box-shadow: 0 10px 20px rgba(39,174,96,0.3); }
+
+/* View More Button */
+.u-view-more-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    position: relative;
+    z-index: 2;
+}
+.u-view-more {
+    background: #C0392B;
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 0 0 0 rgba(192,57,43,0.7);
+    animation: pulseGlow 2s infinite;
+    transition: all 0.3s;
+    overflow: hidden;
+}
+@keyframes pulseGlow { 70% { box-shadow: 0 0 0 15px rgba(192,57,43,0); } 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); } }
+.u-view-more .arrow { display: inline-block; margin-left: -15px; opacity: 0; transition: all 0.3s; }
+.u-view-more:hover { transform: scale(1.05); padding-right: 30px; }
+.u-view-more:hover .arrow { margin-left: 10px; opacity: 1; }
+
+.orbiting-dots { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; pointer-events: none; }
+.o-dot { position: absolute; font-size: 1.2rem; transform-origin: center; transition: all 0.3s; animation: viewOrbit 4s linear infinite; }
+@keyframes viewOrbit { 0% { transform: rotate(calc(var(--i) * 90deg)) translateX(100px) rotate(calc(var(--i) * -90deg)); } 100% { transform: rotate(calc(var(--i) * 90deg + 360deg)) translateX(100px) rotate(calc(var(--i) * -90deg - 360deg)); } }
+.u-view-more:hover ~ .orbiting-dots .o-dot { animation-duration: 2s; }
+
+/* Custom Cursor */
+.u-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 30px; height: 30px;
+    font-size: 24px;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s;
+    display: none;
+}
+.u-cursor-trail {
+    position: fixed;
+    width: 6px; height: 6px;
+    background: #E67E22;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    animation: fadeTrail 0.5s forwards;
+}
+@keyframes fadeTrail { to { opacity: 0; transform: translate(-50%, -50%) scale(0); } }
+
+/* Flying Burger */
+.flying-burger {
+    position: fixed;
+    z-index: 10000;
+    width: 150px;
+    transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+}
+
+@media (max-width: 768px) {
+
+    .sec-menu-universe { padding: 40px 0 80px 0; }
+    .universe-header-container { margin-bottom: 30px; padding: 0 10px; }
+    .universe-title { font-size: 2.2rem; }
+    .floating-burger-title { font-size: 1.8rem; margin-left: 8px; }
+    .brush-stroke { width: 200px; margin-top: -10px; }
+    
+    /* Fix Card Text and Add to Cart Visibility */
+    .u-card { 
+        min-width: 280px; 
+        max-width: 320px;
+        margin-top: 40px; 
+        padding: 25px 15px !important;
+        transform: translateY(0) rotate(0) !important; 
+        scroll-snap-align: center;
+        white-space: normal !important; /* Fix text overflow and background clipping */
+        height: auto !important;
+        display: flex;
+        flex-direction: column;
+    }
+    .u-card-title { font-size: 1.5rem; white-space: normal !important; word-wrap: break-word; }
+    .u-flavor-tags { flex-wrap: wrap; opacity: 1; transform: translateY(0); justify-content: center; }
+    .u-divider { width: 50px; }
+    
+    /* Convert Marquee to Native Swipable Carousel for Mobile */
+    .universe-cards-container {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        scroll-snap-type: x mandatory;
+        padding: 40px 20px 20px 20px !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    .universe-cards-container::-webkit-scrollbar { display: none; }
+    
+    .marquee-track {
+        animation: scrollMarquee 40s linear infinite !important; /* Re-enabled auto-scrolling as requested */
+        padding: 0 10px !important;
+        gap: 15px !important;
+        align-items: stretch;
+    }
+}
+
+@keyframes dropWord {
+    0% { transform: translateY(-50px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.u-card.animate-in {
+    opacity: 1 !important;
+}
