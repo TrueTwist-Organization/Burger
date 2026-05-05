@@ -226,3 +226,31 @@ function addUniverseCart(btn, name, price) {
         }, 2000);
     }, 800);
 }
+
+// 5. Scroll Universe Logic
+let currentScrollPos = 0;
+function scrollUniverse(direction) {
+    const container = document.querySelector('.universe-cards-container');
+    const track = document.querySelector('.marquee-track');
+    if (!container || !track) return;
+
+    // Stop marquee animation permanently when manual navigation starts
+    track.style.animation = 'none';
+    
+    // Get card width + gap
+    const card = track.querySelector('.u-card');
+    const cardWidth = card ? card.offsetWidth + 40 : 360; 
+    
+    if (direction === 'left') {
+        container.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+    } else {
+        container.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    }
+    
+    // Show visual feedback on the buttons
+    const btn = document.querySelector(`.u-${direction}`);
+    if(btn) {
+        btn.style.transform = `translateY(-50%) scale(0.9)`;
+        setTimeout(() => btn.style.transform = `translateY(-50%) scale(1)`, 200);
+    }
+}

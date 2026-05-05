@@ -49,7 +49,7 @@
 
 
     <!-- Section 1: Landing -->
-    <section class="sec-landing" id="home" style="background-image: url('promo_banner.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <section class="sec-landing" id="home" style="background-image: url('hero_bg_whatsapp.jpeg'); background-size: cover; background-position: center bottom; background-repeat: no-repeat;">
         
 
         <!-- Center Floating Burger (Hidden from hero, used for src references in scroll animation) -->
@@ -88,10 +88,24 @@
 
         <!-- Naughty Cartoon (Hidden since burger is removed) -->
         <img src="wow_yummy_transparent.png" id="hero-cartoon" alt="Cartoon" style="display: none !important; position: absolute; width: 500px; right: -250px; bottom: 10%; z-index: 20; opacity: 0; pointer-events: none; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.3));">
+
+        <!-- Wavy Divider -->
+        <div class="section-divider">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
     </section>
 
 
-    <section class="sec-exploded" id="ingredients-story" style="min-height: 100vh; position: relative; background-image: url('exploded_bg_latest.png'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <!-- Offer Marquee -->
+    <div class="offer-marquee">
+        <div class="offer-content">
+            🎁 USE CODE 'FIRST50' FOR 50% OFF ON YOUR FIRST ORDER! &nbsp;·&nbsp; 🔥 BUY 1 GET 1 FREE ON ALL SMASH BURGERS! &nbsp;·&nbsp; 🚚 FREE DELIVERY ON ORDERS ABOVE ₹499! &nbsp;·&nbsp; 🎁 USE CODE 'FIRST50' FOR 50% OFF ON YOUR FIRST ORDER! &nbsp;·&nbsp; 🔥 BUY 1 GET 1 FREE ON ALL SMASH BURGERS! &nbsp;·&nbsp; 🚚 FREE DELIVERY ON ORDERS ABOVE ₹499!
+        </div>
+    </div>
+
+    <section class="sec-exploded" id="ingredients-story" style="min-height: 100vh; position: relative; background-image: url('exploded_bg_whatsapp.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         <div class="exploded-layout">
             <div class="exploded-left" id="exploded-left">
                 <!-- GSAP will inject SVGs and images here -->
@@ -160,7 +174,11 @@
             </svg>
         </div>
 
-        <div class="universe-cards-container" style="overflow: hidden; white-space: nowrap; padding: 60px 0;"><div class="marquee-track" style="display: flex; gap: 40px; padding: 0 40px; animation: scrollMarquee 30s linear infinite;">
+        <div class="u-nav-btn u-prev" onclick="scrollUniverse('left')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="u-nav-btn u-next" onclick="scrollUniverse('right')"><i class="fa-solid fa-chevron-right"></i></div>
+        
+        <div class="universe-cards-container" style="overflow-x: auto; white-space: nowrap; padding: 60px 0; position: relative; scroll-behavior: smooth;">
+            <div class="marquee-track" style="display: flex; gap: 40px; padding: 0 40px; animation: scrollMarquee 30s linear infinite;">
             <!-- Card 1 -->
             <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '200')">
                 <div class="u-burger-wrapper">
