@@ -51,9 +51,9 @@ template = """<!DOCTYPE html>
 </head>
 <body style="background-color: #FFF8E1;">
     <header>
-        <div class="logo">
+        <a href="index.html" class="logo">
             <span class="icon">🍔</span> BURGER
-        </div>
+        </a>
         <nav>
             <a href="index.html">Home</a>
             <a href="index.html#menu">Menu</a>
@@ -76,7 +76,7 @@ template = """<!DOCTYPE html>
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-logo">🍔 BURGER</div>
+            <a href="index.html" class="footer-logo">🍔 BURGER</a>
             <p>Crafted with flavor, served with love.</p>
             <div class="socials" style="display: flex; justify-content: center; gap: 20px;">
                 <a href="https://facebook.com" target="_blank" style="font-size: 1.5rem; transition: color 0.3s; color: white;"><i class="fab fa-facebook-f"></i></a>

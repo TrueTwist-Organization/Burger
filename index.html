@@ -23,12 +23,12 @@
 
     <!-- Header -->
     <header>
-        <div class="logo">
+        <a href="index.html" class="logo">
             <span class="icon">🍔</span> BURGER
-        </div>
+        </a>
         <nav style="position: relative; display: flex; gap: 20px;">
             <a href="#home" class="nav-link active">Home</a>
-            <a href="#menu" class="nav-link">Menu</a>
+            <a href="#menu" class="nav-link" onclick="resetSearch()">Menu</a>
             <a href="#story" class="nav-link">About</a>
             <a href="#contact" class="nav-link">Contact Us</a>
             <div class="nav-indicator"></div>
@@ -1178,7 +1178,7 @@
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-logo">🍔 BURGER</div>
+            <a href="index.html" class="footer-logo">🍔 BURGER</a>
             <p>Crafted with flavor, served with love.</p>
             <div class="socials" style="display: flex; justify-content: center; gap: 20px;">
                 <a href="https://facebook.com" target="_blank" style="font-size: 1.5rem; transition: color 0.3s;"><i
@@ -1197,7 +1197,11 @@
             </div>
         </div>
         <div class="footer-bottom">
-            &copy; 2026 The Perfect Burger. All rights reserved.
+            <div>&copy; 2026 The Perfect Burger. All rights reserved.</div>
+            <div class="footer-credits" style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7; letter-spacing: 0.5px;">
+                design by <a href="https://truetwist.in" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2);">truetwist.in</a> | 
+                marketing by <a href="https://369network.com/" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2);">369network.com</a>
+            </div>
         </div>
     </footer>
 
@@ -1235,6 +1239,17 @@
             document.getElementById('search-modal').classList.add('hidden');
             document.getElementById('search-modal').style.display = 'none';
         }
+        function resetSearch() {
+            const cards = document.querySelectorAll('.u-card');
+            const track = document.querySelector('.marquee-track');
+            if (track) {
+                track.style.animation = 'scrollMarquee 30s linear infinite';
+            }
+            cards.forEach(card => {
+                card.style.display = 'flex';
+            });
+            document.getElementById('search-input').value = '';
+        }
         function performSearch() {
             const val = document.getElementById('search-input').value.toLowerCase().trim();
             if (!val) {
@@ -1244,20 +1259,32 @@
             closeSearchModal();
             
             // Check if we are on the homepage
-            if (document.getElementById('menu') && document.querySelectorAll('.u-card').length > 0) {
-                document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+            const menuSection = document.getElementById('menu');
+            const track = document.querySelector('.marquee-track');
+            
+            if (menuSection && track) {
+                menuSection.scrollIntoView({ behavior: 'smooth' });
+                
+                // Stop marquee animation during search
+                track.style.animation = 'none';
                 
                 const cards = document.querySelectorAll('.u-card');
                 let found = false;
+                let seenTitles = new Set();
                 
                 cards.forEach(card => {
                     const titleEl = card.querySelector('.u-card-title');
                     if (titleEl) {
                         const title = titleEl.innerText.toLowerCase();
-                        if (val === '' || title.includes(val)) {
+                        const isMatch = title.includes(val);
+                        
+                        // If it's a match AND we haven't seen this title yet, show it
+                        if (isMatch && !seenTitles.has(title)) {
                             card.style.display = 'flex';
+                            seenTitles.add(title);
                             found = true;
                         } else {
+                            // Hide duplicates or non-matches
                             card.style.display = 'none';
                         }
                     }
@@ -1269,6 +1296,8 @@
                     } else {
                         alert("No burgers found matching your search!");
                     }
+                    // Reset menu if nothing found? Or keep it empty?
+                    // Let's show all unique cards if search is empty (though we checked !val)
                 }
             } else {
                 // Redirect to index.html with search query

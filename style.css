@@ -40,6 +40,16 @@ header {
     font-weight: 900;
     color: #D32F2F;
     letter-spacing: 2px;
+    text-decoration: none;
+}
+
+.footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #F5ECD7;
+    margin-bottom: 10px;
+    text-decoration: none;
+    display: block;
 }
 
 nav {
@@ -140,6 +150,16 @@ section {
     position: relative;
     padding: 0 20px;
     max-width: 900px;
+}
+
+@media (min-width: 1025px) {
+    .sec-landing {
+        padding-top: 10vh !important; /* Move text up to avoid boy's face */
+    }
+    .text-content h1 {
+        text-shadow: 0 5px 15px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1);
+        font-size: 5rem !important;
+    }
 }
 
 /* Side Burgers & Splashes */

@@ -341,45 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
         slider.scrollLeft = scrollLeft - walk;
     });
 });
-// Custom Add To Cart with Animations
-window.addToCart = function(title, price) {
-    const btn = event.currentTarget;
-    if (btn.classList.contains('added')) return;
-    
-    // Create Ripple
-    const circle = document.createElement('span');
-    const diameter = Math.max(btn.clientWidth, btn.clientHeight);
-    const radius = diameter / 2;
-    
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${event.clientX - btn.getBoundingClientRect().left - radius}px`;
-    circle.style.top = `${event.clientY - btn.getBoundingClientRect().top - radius}px`;
-    circle.classList.add('ripple');
-    
-    const ripple = btn.querySelector('.ripple');
-    if (ripple) ripple.remove();
-    btn.appendChild(circle);
-    
-    // Add Success State
-    btn.classList.add('added');
-    
-    // Floating +1
-    const floatText = document.createElement('div');
-    floatText.innerText = '+1';
-    floatText.classList.add('float-plus-one');
-    floatText.style.left = `${event.clientX}px`;
-    floatText.style.top = `${event.clientY - 20}px`;
-    document.body.appendChild(floatText);
-    
-    setTimeout(() => { floatText.remove(); }, 1000);
-    setTimeout(() => { btn.classList.remove('added'); }, 2000);
-    
-    // Call existing cart logic if it exists
-    if (typeof cartItems !== 'undefined') {
-        cartItems.push({ name: title, price: price });
-        localStorage.setItem('burger_cart', JSON.stringify(cartItems));
-        if (typeof updateCartDisplay === 'function') updateCartDisplay();
-    }
-}
+
 
 

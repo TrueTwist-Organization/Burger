@@ -170,48 +170,9 @@ function addUniverseCart(btn, name, price) {
     
     btn.classList.add('loading');
     
-    // Flying Burger Logic
-    const card = btn.closest('.u-card');
-    const burgerImg = card.querySelector('.u-burger-img');
-    const cartIcon = document.querySelector('.cart-icon') || document.querySelector('.fa-cart-shopping');
-    
-    if(burgerImg && cartIcon) {
-        const startRect = burgerImg.getBoundingClientRect();
-        const endRect = cartIcon.getBoundingClientRect();
-        
-        const flying = document.createElement('img');
-        flying.src = burgerImg.src;
-        flying.className = 'flying-burger';
-        flying.style.left = startRect.left + 'px';
-        flying.style.top = startRect.top + 'px';
-        flying.style.width = startRect.width + 'px';
-        document.body.appendChild(flying);
-        
-        // Animate parabolic arc using cubic-bezier for x and linear for y or vice versa
-        // Actually simpler: CSS transitions
-        setTimeout(() => {
-            flying.style.left = endRect.left + 'px';
-            flying.style.top = endRect.top + 'px';
-            flying.style.width = '20px';
-            flying.style.opacity = '0.5';
-            flying.style.transform = 'rotate(360deg)';
-        }, 50);
-        
-        setTimeout(() => {
-            flying.remove();
-            // Cart icon bounce
-            cartIcon.style.transform = 'scale(1.5)';
-            setTimeout(() => cartIcon.style.transform = 'scale(1)', 200);
-            
-            // Proceed to cart
-            if (typeof addToCart === 'function') {
-                addToCart(name, price); // original function
-            }
-        }, 1050);
-    } else {
-        if (typeof addToCart === 'function') {
-            addToCart(name, price);
-        }
+    // Proceed to add to cart and open modal (animation is now handled in cart.js)
+    if (typeof addToCart === 'function') {
+        addToCart(btn, name, price); 
     }
     
     // Button Success

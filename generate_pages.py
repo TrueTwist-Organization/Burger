@@ -12,7 +12,7 @@ footer = """
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <div class="footer-logo">🍔 BURGER</div>
+            <a href="index.html" class="footer-logo">🍔 BURGER</a>
             <p>Crafted with flavor, served with love.</p>
             <div class="socials" style="display: flex; justify-content: center; gap: 20px;">
                 <a href="#" onclick="showToast('Redirecting to Facebook...'); return false;" style="font-size: 1.5rem; transition: color 0.3s;"><i class="fab fa-facebook-f"></i></a>
@@ -65,7 +65,7 @@ template = """<!DOCTYPE html>
 
     <!-- Header -->
     <header style="background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: relative;">
-        <a href="index.html" class="logo" style="text-decoration: none;">
+        <a href="index.html" class="logo">
             <span class="icon">🍔</span> BURGER
         </a>
         <nav style="position: relative; display: flex; gap: 20px;">

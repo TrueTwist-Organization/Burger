@@ -1,9 +1,48 @@
 
 // ENHANCED CART & AUTH LOGIC
-let cartItems = JSON.parse(localStorage.getItem('burger_cart')) || [];
-// Clean up any corrupted NaN items from local storage
-cartItems = cartItems.filter(item => item && !isNaN(item.price) && item.price !== null);
-localStorage.setItem('burger_cart', JSON.stringify(cartItems));
+let cartItems = [];
+try {
+    cartItems = JSON.parse(localStorage.getItem('burger_cart')) || [];
+} catch(e) {
+    cartItems = [];
+}
+
+const fallbackPrices = {
+    'classic cheese burger': 200,
+    'veggie burger': 180,
+    'veggie bean burger': 220,
+    'avocado smash burger': 220,
+    'mushroom swiss burger': 280,
+    'spicy chicken burger': 240,
+    'bbq bacon burger': 260,
+    'truffle mayo burger': 300,
+    'hawaiian pineapple': 260,
+    'hawaiian pineapple burger': 250,
+    'classic smash burger': 210,
+    'ultimate monster': 350,
+    'chicken grilled burger': 280,
+    'texas smokehouse': 290,
+    'crispy fish burger': 230,
+    'double beef burger': 300,
+    'buffalo chicken': 250
+};
+
+// Clean up and normalize cart items
+function normalizeCart() {
+    cartItems = cartItems.filter(item => item && item.name);
+    cartItems.forEach(item => {
+        if (typeof item.price === 'string') {
+            item.price = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
+        }
+        if (isNaN(item.price) || item.price === null || item.price === 0 || item.price === undefined) {
+            const key = item.name.toLowerCase().trim();
+            item.price = fallbackPrices[key] || 200;
+        }
+        if (!item.qty) item.qty = 1;
+    });
+    localStorage.setItem('burger_cart', JSON.stringify(cartItems));
+}
+normalizeCart();
 
 let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
 let userName = localStorage.getItem('userEmail') ? localStorage.getItem('userEmail').split('@')[0] : '';
@@ -16,21 +55,36 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- CART UI MODAL ---
 function openCartModal() {
     const backdrop = document.getElementById('cart-modal');
+    if (!backdrop) return;
+
     backdrop.classList.remove('hidden');
     // Force reflow
     void backdrop.offsetWidth;
     backdrop.classList.add('show');
+    backdrop.classList.add('active');
+    
+    // Refresh data before rendering
+    try {
+        cartItems = JSON.parse(localStorage.getItem('burger_cart')) || [];
+    } catch(e) {}
+    
     renderEnhancedCart();
     
     // Reset states
-    document.getElementById('split-choice-panel').classList.add('hidden');
-    document.getElementById('btn-main-checkout').style.display = 'flex';
-    document.getElementById('cart-flipper').classList.remove('flipped');
+    const splitPanel = document.getElementById('split-choice-panel');
+    const mainCheckoutBtn = document.getElementById('btn-main-checkout');
+    const flipper = document.getElementById('cart-flipper');
+    
+    if (splitPanel) splitPanel.classList.add('hidden');
+    if (mainCheckoutBtn) mainCheckoutBtn.style.display = 'flex';
+    if (flipper) flipper.classList.remove('flipped');
 }
 
 function closeCartModal() {
     const backdrop = document.getElementById('cart-modal');
+    if (!backdrop) return;
     backdrop.classList.remove('show');
+    backdrop.classList.remove('active');
     setTimeout(() => {
         backdrop.classList.add('hidden');
     }, 400); // match transition
@@ -52,26 +106,116 @@ function handleBackdropClick(e) {
 }
 
 // --- ADD TO CART OVERRIDE ---
-window.addToCart = function(itemName, priceStr) {
+window.addToCart = function(itemName, priceStr, thirdArg) {
+    // Refresh cartItems from localStorage to ensure sync
+    cartItems = JSON.parse(localStorage.getItem('burger_cart')) || [];
+    cartItems = cartItems.filter(item => item && !isNaN(item.price) && item.price !== null);
+
+    // Handle (event/btn, name, price) vs (name, price)
+    let eventObj = null;
+    if (typeof itemName === 'object' && itemName) {
+        // If it's an event or a DOM element
+        if (itemName.target || itemName.type || itemName.tagName) {
+            eventObj = itemName;
+            itemName = priceStr;
+            priceStr = thirdArg;
+        }
+    }
+
+    if (!itemName) {
+        console.error("addToCart: No item name provided");
+        return;
+    }
+
     // Add item logic
-    const price = parseInt(String(priceStr).replace(/[^0-9]/g, '')) || 0;
-    const existing = cartItems.find(i => i.name === itemName);
+    let price = parseInt(String(priceStr).replace(/[^0-9]/g, '')) || 0;
+    
+    // Fallback if price is 0 or NaN
+    if (!price || isNaN(price)) {
+        const key = itemName.toLowerCase().trim();
+        price = fallbackPrices[key] || 200;
+    }
+
+    const existing = cartItems.find(i => i.name.toLowerCase().trim() === itemName.toLowerCase().trim());
+    
     if(existing) {
-        existing.qty += 1;
+        existing.qty = (existing.qty || 1) + 1;
     } else {
         // default image mapping based on name
-        let img = itemName.toLowerCase().replace(/ /g, '_') + '.png';
-        if(!img.includes('burger')) img = 'burger.png';
-        cartItems.push({ name: itemName, price: price, qty: 1, img: img });
+        let img = itemName.toLowerCase().trim().replace(/ /g, '_') + '.png';
+        // Fallback for names that don't match image files exactly
+        if (itemName.toLowerCase().includes('monster')) img = 'ultimate_monster_burger.png';
+        if (itemName.toLowerCase().includes('veggie')) img = 'veggie_burger.png';
+        if (itemName.toLowerCase().includes('cheese')) img = 'classic_cheese_burger.png';
+        
+        cartItems.push({ 
+            name: itemName.trim(), 
+            price: price, 
+            qty: 1, 
+            img: img 
+        });
     }
     
     localStorage.setItem('burger_cart', JSON.stringify(cartItems));
     updateCartBadge();
     
-    // UI Effects
-    const e = window.event;
-    if (e && e.target && e.target.tagName === 'BUTTON') {
-        const btn = e.target;
+    // --- FLYING BURGER ANIMATION ---
+    const btn = (eventObj && eventObj.currentTarget) || (window.event && window.event.target);
+    const cartIcon = document.querySelector('.cart-icon') || document.querySelector('.fa-cart-shopping');
+    
+    // Find the burger image to fly
+    let burgerImg = null;
+    if (btn) {
+        // Try to find image in the same card
+        const card = btn.closest('.u-card') || btn.closest('.menu-card') || btn.closest('.product-detail-container');
+        if (card) {
+            burgerImg = card.querySelector('.u-burger-img') || card.querySelector('.main-burger-img') || card.querySelector('img');
+        }
+    }
+
+    if (burgerImg && cartIcon) {
+        const startRect = burgerImg.getBoundingClientRect();
+        const endRect = cartIcon.getBoundingClientRect();
+        
+        const flying = document.createElement('img');
+        flying.src = burgerImg.src;
+        flying.className = 'flying-burger';
+        flying.style.position = 'fixed';
+        flying.style.zIndex = '10000';
+        flying.style.left = startRect.left + 'px';
+        flying.style.top = startRect.top + 'px';
+        flying.style.width = startRect.width + 'px';
+        flying.style.transition = 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+        document.body.appendChild(flying);
+        
+        setTimeout(() => {
+            flying.style.left = (endRect.left + 10) + 'px';
+            flying.style.top = (endRect.top + 10) + 'px';
+            flying.style.width = '20px';
+            flying.style.opacity = '0.5';
+            flying.style.transform = 'rotate(360deg)';
+        }, 50);
+        
+        setTimeout(() => {
+            flying.remove();
+            // Cart icon bounce
+            cartIcon.style.transform = 'scale(1.5)';
+            setTimeout(() => cartIcon.style.transform = 'scale(1)', 200);
+            
+            // Open Cart Modal after animation
+            if (typeof openCartModal === 'function') {
+                openCartModal();
+            }
+        }, 850);
+    } else {
+        // Fallback: Open cart immediately if no animation
+        if (typeof openCartModal === 'function') {
+            openCartModal();
+        }
+    }
+
+    // UI Effects on button
+    if (btn && btn.tagName === 'BUTTON') {
         const oldHtml = btn.innerHTML;
         btn.innerHTML = '✔ Added';
         btn.style.background = '#27AE60';
@@ -79,14 +223,6 @@ window.addToCart = function(itemName, priceStr) {
             btn.innerHTML = oldHtml;
             btn.style.background = '';
         }, 1500);
-    }
-    
-    // Navbar icon rotation
-    const navIcon = document.querySelector('.fa-cart-shopping');
-    if(navIcon) {
-        navIcon.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
-        navIcon.style.transform = 'rotate(360deg) scale(1.2)';
-        setTimeout(() => { navIcon.style.transform = 'none'; }, 500);
     }
 }
 
@@ -106,17 +242,28 @@ function updateCartBadge() {
 let discountApplied = 0;
 
 function renderEnhancedCart() {
+    // Refresh cartItems from localStorage to ensure sync
+    try {
+        const stored = localStorage.getItem('burger_cart');
+        cartItems = stored ? JSON.parse(stored) : [];
+    } catch(e) {
+        cartItems = [];
+    }
+    
+    // Filter out invalid items
+    cartItems = cartItems.filter(item => item && item.name);
+
     const container = document.getElementById('cart-items-container');
     const summary = document.getElementById('cart-order-summary');
     const promo = document.getElementById('promo-section');
     const action = document.getElementById('checkout-action-area');
     
-    container.innerHTML = '';
+    if (!container) return;
     
     if(cartItems.length === 0) {
-        summary.style.display = 'none';
-        promo.style.display = 'none';
-        action.style.display = 'none';
+        if (summary) summary.style.display = 'none';
+        if (promo) promo.style.display = 'none';
+        if (action) action.style.display = 'none';
         
         container.innerHTML = `
             <div class="empty-cart-state">
@@ -134,17 +281,23 @@ function renderEnhancedCart() {
         return;
     }
     
-    summary.style.display = 'block';
-    promo.style.display = 'block';
-    action.style.display = 'block';
+    if (summary) summary.style.display = 'block';
+    if (promo) promo.style.display = 'block';
+    if (action) action.style.display = 'block';
     
     let subtotal = 0;
+    let html = '';
     
     cartItems.forEach((item, index) => {
-        let q = item.qty || 1;
-        subtotal += item.price * q;
+        let q = parseInt(item.qty) || 1;
+        let price = parseInt(item.price) || 0;
+        if (!price || isNaN(price)) {
+            const key = item.name ? item.name.toLowerCase().trim() : '';
+            price = fallbackPrices[key] || 200;
+        }
+        subtotal += price * q;
         
-        container.innerHTML += `
+        html += `
             <div class="c-item" id="c-item-${index}" style="animation-delay: ${index * 0.1}s">
                 <div class="c-item-left">
                     <img src="${item.img || 'burger.png'}" class="c-item-img" title="Tap to customize ✏️" onerror="this.src='burger.png'">
@@ -157,37 +310,45 @@ function renderEnhancedCart() {
                         </div>
                     </div>
                 </div>
-                <div class="c-item-price">₹${item.price * q}</div>
+                <div class="c-item-price">₹${price * q}</div>
                 <button class="c-item-remove" onclick="removeItem(${index})"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
     });
     
+    container.innerHTML = html;
+    
     // Update Totals
-    document.getElementById('cart-subtotal').innerText = '₹' + subtotal;
+    const subtotalEl = document.getElementById('cart-subtotal');
+    if (subtotalEl) subtotalEl.innerText = '₹' + subtotal;
     
     let delivery = subtotal >= 499 ? 0 : 40;
-    document.getElementById('cart-delivery').innerText = delivery === 0 ? 'FREE' : '₹' + delivery;
+    const deliveryEl = document.getElementById('cart-delivery');
+    if (deliveryEl) deliveryEl.innerText = delivery === 0 ? 'FREE' : '₹' + delivery;
     
     let total = subtotal + delivery - discountApplied;
     
     // Animate total change
     const totEl = document.getElementById('cart-total-price');
-    animateValue(totEl, parseInt(totEl.innerText.replace('₹','')) || 0, total, 400);
+    if (totEl) {
+        animateValue(totEl, parseInt(totEl.innerText.replace('₹','')) || 0, total, 400);
+    }
     
     // Checkout button state
     const btnText = document.getElementById('checkout-btn-text');
     const btnLock = document.getElementById('checkout-lock-icon');
     const mainBtn = document.getElementById('btn-main-checkout');
     
-    if(isLoggedIn) {
-        btnText.innerText = `Checkout as ${userName} →`;
-        btnLock.className = 'fa-solid fa-arrow-right';
-        mainBtn.classList.add('logged-in');
-    } else {
-        btnText.innerText = 'PROCEED TO CHECKOUT';
-        btnLock.className = 'fa-solid fa-lock lock-icon';
-        mainBtn.classList.remove('logged-in');
+    if (btnText && btnLock && mainBtn) {
+        if(isLoggedIn) {
+            btnText.innerText = `Checkout as ${userName} →`;
+            btnLock.className = 'fa-solid fa-arrow-right';
+            mainBtn.classList.add('logged-in');
+        } else {
+            btnText.innerText = 'PROCEED TO CHECKOUT';
+            btnLock.className = 'fa-solid fa-lock lock-icon';
+            mainBtn.classList.remove('logged-in');
+        }
     }
 }
 
