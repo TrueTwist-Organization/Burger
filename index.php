@@ -1,0 +1,1352 @@
+<?php declare(strict_types=1); require_once __DIR__ . '/includes/config.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Perfect Burger</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=DM+Sans:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1349">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <link rel="stylesheet" href="universe.css">
+    <link rel="stylesheet" href="cart_enhanced.css">
+    <link rel="stylesheet" href="contact.css">
+    <link rel="stylesheet" href="story.css">
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <a href="index.php" class="logo">
+            <span class="icon">🍔</span> BURGER
+        </a>
+        <nav style="position: relative; display: flex; gap: 20px;">
+            <a href="#home" class="nav-link active">Home</a>
+            <a href="#menu" class="nav-link" onclick="resetSearch()">Menu</a>
+            <a href="#story" class="nav-link">About</a>
+            <a href="#contact" class="nav-link">Contact Us</a>
+            <div class="nav-indicator"></div>
+        </nav>
+        <div class="icons">
+            <span onclick="openSearchModal()" style="cursor:pointer;">🔍</span>
+            <span class="cart-icon" onclick="openCartModal()" style="position:relative; cursor:pointer;">🛒 <span
+                    id="cart-count"
+                    style="position:absolute; top:-10px; right:-10px; background:#E85A1F; color:white; border-radius:50%; padding:2px 6px; font-size:12px; display:none;">0</span></span>
+            <span class="user-icon" onclick="openLoginModal()" style="cursor:pointer; transition: color 0.3s;">👤</span>
+            <span class="menu-toggle" id="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars" id="menu-icon"></i>
+            </span>
+        </div>
+    </header>
+
+    
+
+
+    <!-- Section 1: Landing -->
+    <section class="sec-landing" id="home" style="background-image: url('hero_bg_whatsapp.jpeg'); background-size: cover; background-position: center bottom; background-repeat: no-repeat;">
+        
+
+        <!-- Center Floating Burger (Hidden from hero, used for src references in scroll animation) -->
+        <div class="burger-container" id="burger-container" style="display: none !important;">
+            <img src="layer8_bottombun.png" class="burger-layer" id="layer-8" alt="Bottom Bun" style="z-index: 1;">
+            <img src="layer7_patty.png" class="burger-layer" id="layer-7" alt="Patty" style="z-index: 2;">
+            <img src="layer6_cheese.png" class="burger-layer" id="layer-6" alt="Cheese" style="z-index: 3;">
+            <img src="layer5_pickles.png" class="burger-layer" id="layer-5" alt="Pickles" style="z-index: 4;">
+            <img src="layer4_onions.png" class="burger-layer" id="layer-4" alt="Onions" style="z-index: 5;">
+            <img src="layer3_tomatoes.png" class="burger-layer" id="layer-3" alt="Tomatoes" style="z-index: 6;">
+            <img src="layer2_lettuce.png" class="burger-layer" id="layer-2" alt="Lettuce" style="z-index: 7;">
+            <img src="layer1_topbun.png" class="burger-layer" id="layer-1" alt="Top Bun" style="z-index: 8;">
+        </div>
+
+        <div class="text-content">
+            <svg class="steam-vibe" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40,60 C30,40 50,30 45,10" stroke="#E85A1F" stroke-width="4" stroke-linecap="round" fill="none"
+                    opacity="0.3" />
+                <path d="M60,60 C70,40 50,30 55,10" stroke="#E85A1F" stroke-width="4" stroke-linecap="round" fill="none"
+                    opacity="0.3" />
+                <path d="M50,70 C40,50 60,40 50,20" stroke="#E85A1F" stroke-width="4" stroke-linecap="round" fill="none"
+                    opacity="0.3" />
+            </svg>
+            <!-- Left content -->
+            <div class="hero-content">
+                <h1>CRAFTED WITH FLAVOR<br>SERVED WITH LOVE</h1>
+                <p>From sizzling patties fresh off the grill to crisp veggies, each burger is crafted with passion. We
+                    believe in better ingredients, amazing taste, and an unforgettable experience.</p>
+                <div class="hero-ctas">
+                    <a href="#menu" class="cta-primary">View Menu</a>
+                    <a href="#menu" class="cta-secondary">Order Now</a>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Naughty Cartoon (Hidden since burger is removed) -->
+        <img src="wow_yummy_transparent.png" id="hero-cartoon" alt="Cartoon" style="display: none !important; position: absolute; width: 500px; right: -250px; bottom: 10%; z-index: 20; opacity: 0; pointer-events: none; filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.3));">
+
+        <!-- Wavy Divider -->
+        <div class="section-divider">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+    </section>
+
+
+    <!-- Offer Marquee -->
+    <div class="offer-marquee">
+        <div class="offer-content">
+            🎁 USE CODE 'FIRST50' FOR 50% OFF ON YOUR FIRST ORDER! &nbsp;·&nbsp; 🔥 BUY 1 GET 1 FREE ON ALL SMASH BURGERS! &nbsp;·&nbsp; 🚚 FREE DELIVERY ON ORDERS ABOVE ₹499! &nbsp;·&nbsp; 🎁 USE CODE 'FIRST50' FOR 50% OFF ON YOUR FIRST ORDER! &nbsp;·&nbsp; 🔥 BUY 1 GET 1 FREE ON ALL SMASH BURGERS! &nbsp;·&nbsp; 🚚 FREE DELIVERY ON ORDERS ABOVE ₹499!
+        </div>
+    </div>
+
+    <section class="sec-exploded" id="ingredients-story" style="min-height: 100vh; position: relative; background-image: url('exploded_bg_whatsapp.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+        <div class="exploded-layout">
+            <div class="exploded-left" id="exploded-left">
+                <!-- GSAP will inject SVGs and images here -->
+            </div>
+            <div class="exploded-right">
+                <div class="exploded-info">
+                    <div class="exploded-num-wrapper">
+                        <span class="exploded-num" id="exp-num">01</span>
+                        <div class="exploded-divider"></div>
+                    </div>
+                    <div class="exploded-text-wrapper">
+                        <h2 class="exploded-name" id="exp-name">TOP BUN</h2>
+                        <p class="exploded-desc" id="exp-desc">Golden sesame seed bun, freshly baked daily.</p>
+                    </div>
+                </div>
+                <div class="exploded-progress" id="exp-progress">
+                    <div class="exp-dot active"></div>
+                    <div class="exp-dot"></div>
+                    <div class="exp-dot"></div>
+                    <div class="exp-dot"></div>
+                    <div class="exp-dot"></div>
+                    <div class="exp-dot"></div>
+                    <div class="exp-dot"></div>
+                    <div class="exp-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Menu -->
+
+
+
+
+
+    <!-- FLOATING BURGER UNIVERSE MENU -->
+    <section class="sec-menu-universe" id="menu">
+        <div class="u-cursor" id="u-cursor">🍔</div>
+
+        <!-- Ambient Backgrounds -->
+        <div class="universe-bg"></div>
+        <div class="universe-vignette"></div>
+        <div class="blob-orange"></div>
+        <div class="blob-red"></div>
+        <img src="burger_lineart.svg" class="bg-lineart" style="top:10%; left:5%" alt="">
+        <img src="burger_lineart.svg" class="bg-lineart"
+            style="bottom:10%; right:5%; width:400px; animation-duration:90s; animation-direction: reverse;" alt="">
+
+        <!-- Marquee -->
+        <div class="menu-marquee">
+            <div class="marquee-content">
+                🔥 BEST SELLERS &nbsp;·&nbsp; FRESH DAILY &nbsp;·&nbsp; ORDER NOW &nbsp;·&nbsp; FREE DELIVERY ABOVE ₹499
+                &nbsp;·&nbsp; 🍔 MADE WITH LOVE &nbsp;·&nbsp;
+                🔥 BEST SELLERS &nbsp;·&nbsp; FRESH DAILY &nbsp;·&nbsp; ORDER NOW &nbsp;·&nbsp; FREE DELIVERY ABOVE ₹499
+                &nbsp;·&nbsp; 🍔 MADE WITH LOVE &nbsp;·&nbsp;
+                🔥 BEST SELLERS &nbsp;·&nbsp; FRESH DAILY &nbsp;·&nbsp; ORDER NOW &nbsp;·&nbsp; FREE DELIVERY ABOVE ₹499
+                &nbsp;·&nbsp; 🍔 MADE WITH LOVE &nbsp;·&nbsp;
+            </div>
+        </div>
+
+        <div class="universe-header-container">
+            <div class="title-badge">🍔 FRESHLY MADE DAILY <i class="fa-solid fa-fire flame"></i></div>
+            <h2 class="universe-title" id="u-title">EXPLORE OUR MENU</h2>
+            <svg class="brush-stroke" viewBox="0 0 300 20">
+                <path d="M 10 15 Q 150 0 290 15" fill="none" stroke="#C0392B" stroke-width="4" stroke-linecap="round" />
+            </svg>
+        </div>
+
+        <div class="u-nav-btn u-prev" onclick="scrollUniverse('left')"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="u-nav-btn u-next" onclick="scrollUniverse('right')"><i class="fa-solid fa-chevron-right"></i></div>
+        
+        <div class="universe-cards-container" style="overflow-x: auto; white-space: nowrap; padding: 60px 0; position: relative; scroll-behavior: smooth;">
+            <div class="marquee-track" style="display: flex; gap: 40px; padding: 0 40px; animation: scrollMarquee 30s linear infinite;">
+            <!-- Card 1 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '200')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="classic_cheese_burger.php" style="display:block; z-index:10; position:relative;"><img src="classic_cheese_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="classic_cheese_burger.php" class="u-card-title">Classic Cheese Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">200</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🧀 Cheesy</span><span class="u-tag">🥬 Fresh</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Classic Cheese Burger', '₹200')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '180')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="veggie_burger.php" style="display:block; z-index:10; position:relative;"><img src="veggie_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="veggie_burger.php" class="u-card-title">Veggie Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">180</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🌱 Healthy</span><span class="u-tag">🌿 Fresh</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Veggie Burger', '₹180')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '220')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="avocado_smash_burger.php" style="display:block; z-index:10; position:relative;"><img src="avocado_smash_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="avocado_smash_burger.php" class="u-card-title">Avocado Smash Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">220</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🥑 Creamy</span><span class="u-tag">🥑 Superfood</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Avocado Smash Burger', '₹220')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '280')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="mushroom_swiss_burger.php" style="display:block; z-index:10; position:relative;"><img src="mushroom_swiss_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="mushroom_swiss_burger.php" class="u-card-title">Mushroom Swiss Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">280</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🍄 Earthy</span><span class="u-tag">🧀 Cheesy</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Mushroom Swiss Burger', '₹280')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 5 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '240')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="spicy_chicken_burger.php" style="display:block; z-index:10; position:relative;"><img src="spicy_chicken_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="spicy_chicken_burger.php" class="u-card-title">Spicy Chicken Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">240</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🌶️ Spicy</span><span class="u-tag">🍗 Crispy</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Spicy Chicken Burger', '₹240')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 6 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '260')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="bbq_bacon_burger.php" style="display:block; z-index:10; position:relative;"><img src="bbq_bacon_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="bbq_bacon_burger.php" class="u-card-title">BBQ Bacon Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">260</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🥓 Smokey</span><span class="u-tag">🥩 Meaty</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'BBQ Bacon Burger', '₹260')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 7 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '300')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="truffle_mayo_burger.php" style="display:block; z-index:10; position:relative;"><img src="truffle_mayo_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="truffle_mayo_burger.php" class="u-card-title">Truffle Mayo Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">300</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🍄 Rich</span><span class="u-tag">✨ Premium</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Truffle Mayo Burger', '₹300')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 8 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '250')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="hawaiian_pineapple_burger.php" style="display:block; z-index:10; position:relative;"><img src="hawaiian_pineapple_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="hawaiian_pineapple_burger.php" class="u-card-title">Hawaiian Pineapple Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">250</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🍍 Sweet</span><span class="u-tag">🏝️ Tropical</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Hawaiian Pineapple Burger', '₹250')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 9 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '210')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="classic_smash_burger.php" style="display:block; z-index:10; position:relative;"><img src="classic_smash_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="classic_smash_burger.php" class="u-card-title">Classic Smash Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">210</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🍔 Crispy</span><span class="u-tag">😋 Juicy</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Classic Smash Burger', '₹210')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 1 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '200')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="classic_cheese_burger.php" style="display:block; z-index:10; position:relative;"><img src="classic_cheese_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="classic_cheese_burger.php" class="u-card-title">Classic Cheese Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">200</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🧀 Cheesy</span><span class="u-tag">🥬 Fresh</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <span class="u-percentage">50%</span></div>
+                        <div class="u-ind-row taste">Taste <span class="u-percentage">75%</span></div>
+                        <div class="u-ind-row juice">Juice <span class="u-percentage">100%</span></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Classic Cheese Burger', '₹200')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '180')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="veggie_burger.php" style="display:block; z-index:10; position:relative;"><img src="veggie_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="veggie_burger.php" class="u-card-title">Veggie Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">180</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🌱 Healthy</span><span class="u-tag">🌿 Fresh</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row taste">Taste <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row juice">Juice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div></div></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Veggie Burger', '₹180')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '220')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="avocado_smash_burger.php" style="display:block; z-index:10; position:relative;"><img src="avocado_smash_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="avocado_smash_burger.php" class="u-card-title">Avocado Smash Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">220</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🥑 Creamy</span><span class="u-tag">🥑 Superfood</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row taste">Taste <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row juice">Juice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div></div></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Avocado Smash Burger', '₹220')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '280')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="mushroom_swiss_burger.php" style="display:block; z-index:10; position:relative;"><img src="mushroom_swiss_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="mushroom_swiss_burger.php" class="u-card-title">Mushroom Swiss Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">280</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🍄 Earthy</span><span class="u-tag">🧀 Cheesy</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row taste">Taste <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row juice">Juice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div></div></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Mushroom Swiss Burger', '₹280')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 5 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '240')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="spicy_chicken_burger.php" style="display:block; z-index:10; position:relative;"><img src="spicy_chicken_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="spicy_chicken_burger.php" class="u-card-title">Spicy Chicken Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">240</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🌶️ Spicy</span><span class="u-tag">🍗 Crispy</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row taste">Taste <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row juice">Juice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div></div></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Spicy Chicken Burger', '₹240')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 6 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '260')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="bbq_bacon_burger.php" style="display:block; z-index:10; position:relative;"><img src="bbq_bacon_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="bbq_bacon_burger.php" class="u-card-title">BBQ Bacon Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">260</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🥓 Smokey</span><span class="u-tag">🥩 Meaty</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row taste">Taste <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row juice">Juice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div></div></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'BBQ Bacon Burger', '₹260')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 7 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '300')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="truffle_mayo_burger.php" style="display:block; z-index:10; position:relative;"><img src="truffle_mayo_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="truffle_mayo_burger.php" class="u-card-title">Truffle Mayo Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">300</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🍄 Rich</span><span class="u-tag">✨ Premium</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row taste">Taste <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row juice">Juice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div></div></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Truffle Mayo Burger', '₹300')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 8 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '250')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="hawaiian_pineapple_burger.php" style="display:block; z-index:10; position:relative;"><img src="hawaiian_pineapple_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="hawaiian_pineapple_burger.php" class="u-card-title">Hawaiian Pineapple Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">250</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🍍 Sweet</span><span class="u-tag">🏝️ Tropical</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row taste">Taste <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row juice">Juice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div></div></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Hawaiian Pineapple Burger', '₹250')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Card 9 -->
+            <div class="u-card" onmouseenter="rollPrice(this.querySelector('.u-price-val'), '210')">
+                <div class="u-burger-wrapper">
+                    <div class="u-steam s1"></div>
+                    <div class="u-steam s2"></div>
+                    <div class="u-steam s3"></div>
+                    <a href="classic_smash_burger.php" style="display:block; z-index:10; position:relative;"><img src="classic_smash_burger.png" class="u-burger-img" alt="Burger"></a>
+                    <div class="u-burger-shadow"></div>
+                </div>
+                <div class="u-card-info">
+                    <a href="classic_smash_burger.php" class="u-card-title">Classic Smash Burger</a>
+                    <div class="u-divider"></div>
+                    <div class="u-price-wrapper">
+                        <span class="u-price-currency">₹</span><span class="u-price-val">210</span>
+                    </div>
+                    <div class="u-flavor-tags">
+                        <span class="u-tag">🍔 Crispy</span><span class="u-tag">😋 Juicy</span>
+                    </div>
+                    <div class="u-indicators">
+                        <div class="u-ind-row spice">Spice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row taste">Taste <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar"></div></div></div>
+                        <div class="u-ind-row juice">Juice <div class="u-bars"><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div><div class="u-bar fill"></div></div></div>
+                    </div>
+                    <button class="u-btn-cart" onclick="addUniverseCart(this, 'Classic Smash Burger', '₹210')">
+                        <i class="fa-solid fa-cart-shopping u-btn-icon"></i><span class="u-btn-text">Add to Cart</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+    
+
+    
+
+    <!-- Cart Modal -->
+
+    <!-- ENHANCED CART MODAL -->
+    <div id="cart-modal" class="modal-overlay cart-backdrop hidden" onclick="handleBackdropClick(event)">
+        <div class="cart-flip-container" id="cart-flip-container">
+            <div class="cart-flipper" id="cart-flipper">
+
+                <!-- FRONT: CART VIEW -->
+                <div class="cart-front">
+                    <div class="cart-header">
+                        <h2>YOUR CART <span class="cart-icon-anim">🛒</span></h2>
+                        <button class="close-btn" onclick="closeCartModal()">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="cart-divider"></div>
+
+                    <div id="cart-items-container" class="cart-items-wrapper">
+                        <!-- Dynamic Cart Items -->
+                    </div>
+
+                    <!-- Promo Code -->
+                    <div class="promo-section" id="promo-section" style="display:none;">
+                        <div class="promo-toggle" onclick="togglePromo()">Have a promo code? 🏷️</div>
+                        <div class="promo-input-container hidden" id="promo-container">
+                            <input type="text" id="promo-input" placeholder="Enter code (try: BURGER50)">
+                            <button onclick="applyPromo()">Apply</button>
+                        </div>
+                        <div id="promo-msg"></div>
+                    </div>
+
+                    <div class="cart-order-summary" id="cart-order-summary" style="display:none;">
+                        <div class="summary-row"><span>Subtotal</span><span id="cart-subtotal">₹0</span></div>
+                        <div class="summary-row delivery-row">
+                            <span>Delivery <i class="fa-solid fa-circle-info tooltip"><span class="tooltiptext">Free
+                                        over ₹499</span></i></span>
+                            <span id="cart-delivery">₹40</span>
+                        </div>
+                        <div class="summary-row discount-row hidden" id="discount-row">
+                            <span>Discount</span><span id="cart-discount">-₹0</span>
+                        </div>
+                        <div class="cart-divider thick"></div>
+                        <div class="summary-row total-row">
+                            <span>TOTAL</span>
+                            <div class="total-price-col">
+                                <span id="cart-total-price">₹0</span>
+                                <small>Inclusive of all taxes</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Login / Checkout Action Area -->
+                    <div class="checkout-action-area" id="checkout-action-area">
+                        <button class="btn-checkout-smart" id="btn-main-checkout" onclick="handleCheckoutClick()">
+                            <i class="fa-solid fa-lock lock-icon" id="checkout-lock-icon"></i> <span
+                                id="checkout-btn-text">PROCEED TO CHECKOUT</span>
+                        </button>
+
+                        <div class="split-choice-panel hidden" id="split-choice-panel">
+                            <p>To place your order...</p>
+                            <button class="btn-login-choice" onclick="flipToLogin()">
+                                <i class="fa-solid fa-user"></i> LOGIN / SIGNUP
+                            </button>
+                            <div class="choice-divider"><span>or</span></div>
+                            <button class="btn-guest-choice" onclick="proceedToCheckout(true)">
+                                🚀 CONTINUE AS GUEST
+                            </button>
+                            <small>Login to earn reward points 🎯</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BACK: LOGIN VIEW -->
+                <div class="cart-back">
+                    <button class="back-to-cart-btn" onclick="flipToCart()">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </button>
+                    <div class="login-inner">
+                        <h2>Welcome Back! 👋</h2>
+                        <form id="cart-login-form" onsubmit="handleCartLogin(event)">
+                            <div class="input-group">
+                                <input type="email" id="cart-email" required placeholder=" ">
+                                <label>Email</label>
+                            </div>
+                            <div class="input-group">
+                                <input type="password" id="cart-password" required placeholder=" ">
+                                <label>Password</label>
+                                <i class="fa-solid fa-eye toggle-pwd" onclick="toggleCartPwd()"></i>
+                            </div>
+                            <div class="forgot-link"><a href="#">Forgot Password?</a></div>
+                            <button type="submit" class="btn-submit-login">LOGIN</button>
+                        </form>
+                        <div class="new-here">New here? <a href="#">Sign Up</a></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Section 5: Contact Us Universe -->
+    <section class="sec-contact-universe" id="contact">
+        <!-- Marquee -->
+        <div class="contact-marquee">
+            <div class="c-marquee-content">
+                📞 REACH US ANYTIME &nbsp;·&nbsp; WE LOVE FEEDBACK &nbsp;·&nbsp; 🍔 YOUR OPINION MATTERS &nbsp;·&nbsp;
+                📞 REACH US ANYTIME &nbsp;·&nbsp; WE LOVE FEEDBACK &nbsp;·&nbsp; 🍔 YOUR OPINION MATTERS &nbsp;·&nbsp;
+                📞 REACH US ANYTIME &nbsp;·&nbsp; WE LOVE FEEDBACK &nbsp;·&nbsp; 🍔 YOUR OPINION MATTERS &nbsp;·&nbsp;
+            </div>
+        </div>
+
+        <!-- Ambient Backgrounds -->
+        <div class="c-bg-layer"></div>
+        <div class="c-blob-orange"></div>
+        <div class="c-blob-red"></div>
+
+        <!-- Floating Ingredients -->
+        <div class="c-floating-ingredients">
+            <span class="c-ing" style="--i:1; --s:15s; --x: 10%; --y: 20%;">🍅</span>
+            <span class="c-ing" style="--i:2; --s:25s; --x: 80%; --y: 15%;">🧅</span>
+            <span class="c-ing" style="--i:3; --s:20s; --x: 15%; --y: 80%;">🥬</span>
+            <span class="c-ing" style="--i:4; --s:30s; --x: 85%; --y: 85%;">🧀</span>
+        </div>
+
+        <div class="contact-container">
+            <!-- Left Panel -->
+            <div class="c-left-panel">
+                <h2 class="c-left-title">LET'S TALK 🍔</h2>
+                <svg class="c-brush-stroke" viewBox="0 0 200 15">
+                    <path d="M 5 10 Q 100 0 195 10" fill="none" stroke="#E67E22" stroke-width="3"
+                        stroke-linecap="round" />
+                </svg>
+                <p class="c-left-subtext">"We respond faster than our burgers get eaten 😄"</p>
+
+                <div class="c-info-list">
+                    <div class="c-info-item">
+                        <div class="c-info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="c-info-text">123 Burger Lane, Food Street<br>Mumbai, Maharashtra</div>
+                    </div>
+                    <div class="c-info-item phone-item">
+                        <div class="c-info-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="c-info-text"><a href="tel:+919876543210">+91 98765 43210</a></div>
+                    </div>
+                    <div class="c-info-item email-item">
+                        <div class="c-info-icon"><i class="fa-solid fa-envelope"></i></div>
+                        <div class="c-info-text"><a href="mailto:hello@burgerhouse.com">hello@burgerhouse.com</a></div>
+                    </div>
+                    <div class="c-info-item time-item">
+                        <div class="c-info-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="c-info-text">Mon–Sun: 10AM – 11PM</div>
+                    </div>
+                </div>
+
+                <div class="c-socials">
+                    <a href="#" class="c-social-btn"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="c-social-btn"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="c-social-btn"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="c-social-btn"
+                        style="font-weight:bold; font-family:sans-serif; font-size: 1rem;">Z</a>
+                </div>
+
+                <img src="chef_1.png" class="c-chef-wave" alt="Waving Chef">
+            </div>
+
+            <!-- Right Panel (Form) -->
+            <div class="c-right-panel" id="c-form-panel">
+                <div class="c-form-header">
+                    <h2 class="c-form-title" id="c-form-title"></h2>
+                    <span class="c-form-burger">🍔</span>
+                </div>
+                <p class="c-form-subtext" id="c-form-subtext"></p>
+                <svg class="c-divider-wavy" viewBox="0 0 300 20">
+                    <path d="M 0 10 Q 30 0 60 10 T 120 10 T 180 10 T 240 10 T 300 10" fill="none" stroke="#E8D5C0"
+                        stroke-width="2" stroke-linecap="round" />
+                </svg>
+
+                <!-- Form -->
+                <form id="burger-contact-form" class="c-form" novalidate>
+                    <div class="c-input-group">
+                        <i class="fa-solid fa-user c-input-icon"></i>
+                        <input type="text" id="c-name" class="c-input" required placeholder=" ">
+                        <label for="c-name" class="c-label">Your Name</label>
+                        <svg class="c-check-icon" viewBox="0 0 24 24">
+                            <path d="M5 12l5 5l10 -10" fill="none" stroke="#27AE60" stroke-width="3"
+                                stroke-linecap="round" />
+                        </svg>
+                        <div class="c-error-msg"><i class="fa-solid fa-triangle-exclamation"></i> This field is required
+                        </div>
+                    </div>
+
+                    <div class="c-input-group">
+                        <i class="fa-solid fa-envelope c-input-icon"></i>
+                        <input type="email" id="c-email" class="c-input" required placeholder=" ">
+                        <label for="c-email" class="c-label">Your Email</label>
+                        <svg class="c-check-icon" viewBox="0 0 24 24">
+                            <path d="M5 12l5 5l10 -10" fill="none" stroke="#27AE60" stroke-width="3"
+                                stroke-linecap="round" />
+                        </svg>
+                        <div class="c-error-msg" id="c-email-err"><i class="fa-solid fa-triangle-exclamation"></i> Hmm,
+                            check that email 🤔</div>
+                    </div>
+
+                    <div class="c-input-group c-textarea-group">
+                        <textarea id="c-message" class="c-input" required placeholder=" " rows="4"
+                            maxlength="500"></textarea>
+                        <label for="c-message" class="c-label">Tell us anything — feedback, orders, love for our
+                            burgers... 🍔❤️</label>
+                        <div class="c-char-count"><span id="c-char-current">0</span> / 500</div>
+                        <div class="c-error-msg"><i class="fa-solid fa-triangle-exclamation"></i> Message cannot be
+                            empty</div>
+                    </div>
+
+                    <button type="submit" class="c-btn-submit" id="c-btn-submit">
+                        <span class="c-btn-text">SEND MESSAGE 🚀</span>
+                        <div class="c-btn-loader">
+                            <span class="c-spin-burger">🍔</span> Sending<span class="c-dots">...</span>
+                        </div>
+                        <div class="c-btn-success">
+                            <svg class="c-btn-check" viewBox="0 0 24 24">
+                                <path d="M5 12l5 5l10 -10" fill="none" stroke="white" stroke-width="3"
+                                    stroke-linecap="round" />
+                            </svg>
+                            MESSAGE SENT!
+                        </div>
+                        <span class="c-paper-plane">✈️</span>
+                    </button>
+                </form>
+
+                <!-- Success State Overlay -->
+                <div class="c-success-overlay" id="c-success-overlay">
+                    <img src="yummy.png" class="c-success-chef" alt="Chef on Phone">
+                    <div class="c-success-bubble">Got it! We'll call you faster than you can say 'double patty'! 🍔
+                    </div>
+
+                    <div class="c-success-circle">
+                        <svg class="c-big-check" viewBox="0 0 50 50">
+                            <path d="M10 25l10 10l20 -20" fill="none" stroke="#27AE60" stroke-width="4"
+                                stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <h3 class="c-success-title">WE'LL BE IN TOUCH SOON! 🎉</h3>
+                    <p class="c-success-subtext" id="c-success-subtext"></p>
+
+                    <button class="c-btn-reset" onclick="resetContactForm()">SEND ANOTHER MESSAGE</button>
+                </div>
+
+                <img src="classic_cheese_burger.png" class="c-corner-burger top-left" alt="">
+                <img src="spicy_chicken_burger.png" class="c-corner-burger bottom-right" alt="">
+            </div>
+        </div>
+
+        <div id="c-toast" class="c-toast">Please fill all fields! 🙏</div>
+    </section>
+
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeLoginModal()">&times;</span>
+            <h2 id="modal-title">Welcome Back!</h2>
+            <p id="modal-subtitle">Log in to your account</p>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <input type="email" id="email-input" placeholder="Email Address" required>
+                <input type="password" id="password-input" placeholder="Password" required>
+                <button type="submit" class="btn-add-cart" style="width:100%; margin-top:20px;">LOGIN</button>
+            </form>
+            <p style="margin-top:20px; font-size:0.9rem;">
+                <span id="toggle-text">Don't have an account?</span>
+                <a href="#" onclick="toggleAuthMode(); return false;" id="toggle-link"
+                    style="color:#E85A1F; font-weight:bold;">Sign Up</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Section 3: Our Story (Cinematic Redesign) -->
+    <section class="sec-story-new" id="story">
+        <!-- Background Atmosphere -->
+        <div class="story-bg-texture"></div>
+        <div class="story-bg-blobs">
+            <div class="blob blob-orange"></div>
+            <div class="blob blob-red"></div>
+        </div>
+        <div class="story-watermark">
+            <img src="burger_transparent.png" alt="Watermark Burger"
+                style="opacity: 0.15; filter: grayscale(100%); width: 800px; height: 800px; object-fit: contain;">
+        </div>
+
+        <!-- Top Wave Divider -->
+        <div class="story-wave wave-top">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path
+                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                    fill="#FFF8EE"></path>
+            </svg>
+        </div>
+
+        <div class="story-container">
+
+            <!-- Heading -->
+            <div class="story-header io-trigger">
+                <div class="est-badge">EST. 2018 🍔</div>
+                <div class="title-wrapper">
+                    <span class="quote-mark-bg">"</span>
+                    <div class="title-line-1">OUR</div>
+                    <div class="title-line-2">STORY <span class="beating-heart">❤️</span></div>
+                    <svg class="title-underline" viewBox="0 0 400 20" preserveAspectRatio="none">
+                        <path class="draw-line" d="M10,10 Q200,20 390,5" fill="none" stroke="#E67E22" stroke-width="6"
+                            stroke-linecap="round" />
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Pull Quote -->
+            <div class="story-pull-quote io-trigger">
+                " Every burger tells a story. "
+            </div>
+
+            <!-- Two Column Layout -->
+            <div class="story-columns">
+                <!-- Left: Visual -->
+                <div class="story-col-left io-trigger">
+                    <div class="chef-spotlight"></div>
+                    <div class="chef-wrapper" id="story-chef">
+                        <img src="chef_1.png" class="chef-hero" alt="Chef Marco">
+                        <div class="chef-platform">Since 2018</div>
+                        <div class="steam-wisps"></div>
+                        <div class="chef-speech-bubble" id="chef-speech">Psst... secret ingredient is love! ❤️</div>
+                    </div>
+                    <div class="chef-badges">
+                        <div class="badge-item badge-award">
+                            <span class="badge-icon">🏆</span>
+                            <span class="badge-text">Best Burger<br>2022</span>
+                        </div>
+                        <div class="badge-item badge-rating">
+                            <span class="badge-icon">⭐</span>
+                            <span class="badge-text">4.9<br>Rating</span>
+                        </div>
+                        <div class="badge-item badge-orders">
+                            <span class="badge-icon">🍔</span>
+                            <span class="badge-text">50K+<br>Orders</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Text -->
+                <div class="story-col-right">
+                    <div class="story-chapter io-trigger" data-chapter="1">
+                        <div class="chapter-icon">🌱</div>
+                        <h3>HOW IT STARTED</h3>
+                        <p class="reveal-text">Founded with a simple mission: to create the ultimate burger experience.
+                            It all started in a small kitchen...</p>
+                    </div>
+                    <div class="chapter-divider"></div>
+                    <div class="story-chapter io-trigger" data-chapter="2">
+                        <div class="chapter-icon">💪</div>
+                        <h3>WHAT WE BELIEVE</h3>
+                        <p class="reveal-text">We believe great food starts with great ingredients. From daily baked
+                            artisan buns to secret signature sauces...</p>
+                    </div>
+                    <div class="chapter-divider"></div>
+                    <div class="story-chapter io-trigger" data-chapter="3">
+                        <div class="chapter-icon">🤝</div>
+                        <h3>OUR PROMISE</h3>
+                        <p class="reveal-text">Every single layer is crafted with passion and served with love. That's
+                            our promise to you.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Counter Row -->
+            <div class="story-stats" id="stats-counter-trigger">
+                <div class="stat-card io-trigger">
+                    <div class="stat-icon-wrap"><span class="stat-icon">🍔</span></div>
+                    <div class="stat-number-wrap">
+                        <span class="stat-number" data-target="50000">0</span><span class="stat-suffix">+</span>
+                    </div>
+                    <div class="stat-label">Burgers Served</div>
+                </div>
+                <div class="stat-card io-trigger">
+                    <div class="stat-icon-wrap"><span class="stat-icon">⭐</span></div>
+                    <div class="stat-number-wrap">
+                        <span class="stat-number" data-target="4.9" data-decimals="1">0</span><span
+                            class="stat-suffix">/5</span>
+                    </div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+                <div class="stat-card io-trigger">
+                    <div class="stat-icon-wrap"><span class="stat-icon">👨‍🍳</span></div>
+                    <div class="stat-number-wrap">
+                        <span class="stat-number" data-target="8">0</span><span class="stat-suffix">+</span>
+                    </div>
+                    <div class="stat-label">Years of Passion</div>
+                </div>
+                <div class="stat-card io-trigger">
+                    <div class="stat-icon-wrap"><span class="stat-icon">📍</span></div>
+                    <div class="stat-number-wrap">
+                        <span class="stat-number" data-target="3">0</span><span class="stat-suffix"></span>
+                    </div>
+                    <div class="stat-label">Locations</div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="story-timeline-section io-trigger" id="timeline-trigger">
+                <div class="timeline-line-track">
+                    <div class="timeline-line-fill" id="timeline-fill"></div>
+                </div>
+                <div class="timeline-points">
+                    <div class="t-point" style="left: 0%;">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-year">2018</span>
+                            <p>Started in a garage kitchen</p>
+                            <div class="t-ill">🏠</div>
+                        </div>
+                    </div>
+                    <div class="t-point" style="left: 33%;">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-year">2019</span>
+                            <p>First 1000 customers</p>
+                            <div class="t-ill">🙌</div>
+                        </div>
+                    </div>
+                    <div class="t-point" style="left: 66%;">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-year">2021</span>
+                            <p>Opened 2nd location</p>
+                            <div class="t-ill">🏪</div>
+                        </div>
+                    </div>
+                    <div class="t-point" style="left: 100%;">
+                        <div class="t-dot"></div>
+                        <div class="t-content">
+                            <span class="t-year">2024</span>
+                            <p>50,000 orders milestone</p>
+                            <div class="t-ill">🎉</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chef Quote Card -->
+            <div class="story-quote-card io-trigger">
+                <div class="sqc-left">
+                    <img src="chef_1.png" alt="Chef Holding Burger" class="sqc-chef">
+                </div>
+                <div class="sqc-right">
+                    <span class="sqc-quote-mark-large">"</span>
+                    <div class="sqc-lines">
+                        <p class="sqc-line">I pour my heart into every burger.</p>
+                        <p class="sqc-line">When you take that first bite and</p>
+                        <p class="sqc-line">smile — that's why I do this.</p>
+                    </div>
+                    <div class="sqc-author">— Chef Marco, Founder</div>
+                    <div class="sqc-signature-line"></div>
+                </div>
+                <div class="sqc-hat-icon">👨‍🍳</div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Wave Divider -->
+        <div class="story-wave wave-bottom">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path
+                    d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+                    fill="#F5ECD7"></path>
+            </svg>
+        </div>
+    </section>
+
+
+
+    
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <a href="index.php" class="footer-logo">🍔 BURGER</a>
+            <p>Crafted with flavor, served with love.</p>
+            <div class="socials" style="display: flex; justify-content: center; gap: 20px;">
+                <a href="https://facebook.com" target="_blank" style="font-size: 1.5rem; transition: color 0.3s;"><i
+                        class="fab fa-facebook-f"></i></a>
+                <a href="https://instagram.com" target="_blank" style="font-size: 1.5rem; transition: color 0.3s;"><i
+                        class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com" target="_blank" style="font-size: 1.5rem; transition: color 0.3s;"><i
+                        class="fab fa-twitter"></i></a>
+            </div>
+                        <div class="legal-links" style="margin-top: 20px; font-size: 0.85rem;">
+                <a href="index.php#story" style="color: #bbb; text-decoration: none; margin: 0 10px;">About Us</a> | 
+                <a href="index.php#contact" style="color: #bbb; text-decoration: none; margin: 0 10px;">Contact Us</a> | 
+                <a href="disclaimer.php" style="color: #bbb; text-decoration: none; margin: 0 10px;">Disclaimer</a> | 
+                <a href="privacy_policy.php" style="color: #bbb; text-decoration: none; margin: 0 10px;">Privacy Policy</a> | 
+                <a href="terms_of_service.php" style="color: #bbb; text-decoration: none; margin: 0 10px;">Terms & Conditions</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div>&copy; 2026 The Perfect Burger. All rights reserved.</div>
+            <div class="footer-credits" style="margin-top: 10px; font-size: 0.8rem; opacity: 0.7; letter-spacing: 0.5px;">
+                design by <a href="https://truetwist.in" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2);">truetwist.in</a> | 
+                marketing by <a href="https://369network.com/" target="_blank" style="color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2);">369network.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="cart.js"></script>
+    <script src="script.js?v=2"></script>
+    <script src="universe.js"></script>
+    <script src="contact.js"></script>
+    <script src="story.js"></script>
+
+    <!-- Search Modal -->
+    <div id="search-modal" class="modal-overlay hidden"
+        onclick="if(event.target.id==='search-modal') closeSearchModal()" style="z-index: 10000;">
+        <div class="search-container"
+            style="background: white; padding: 30px; border-radius: 12px; width: 400px; max-width: 90%; text-align: center; position: absolute; top: 20%; left: 50%; transform: translate(-50%, 0); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <h2 style="color: #FF5722; font-family: 'Bangers', cursive; font-size: 2rem; margin-bottom: 20px;">Search Menu</h2>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="search-input" placeholder="Type a burger name..." onkeypress="if(event.key === 'Enter') performSearch()"
+                    style="flex: 1; padding: 10px 15px; border: 2px solid #ddd; border-radius: 8px; font-size: 1rem; outline: none;">
+                <button onclick="performSearch()"
+                    style="background: #FF5722; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">Search</button>
+            </div>
+            <button class="close-btn" onclick="closeSearchModal()"
+                style="position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 1.5rem; color: #888; cursor: pointer;">&times;</button>
+        </div>
+    </div>
+
+    <script>
+        function openSearchModal() {
+            const modal = document.getElementById('search-modal');
+            modal.classList.remove('hidden');
+            modal.style.display = 'flex';
+            setTimeout(() => document.getElementById('search-input').focus(), 100);
+        }
+        function closeSearchModal() {
+            document.getElementById('search-modal').classList.add('hidden');
+            document.getElementById('search-modal').style.display = 'none';
+        }
+        function resetSearch() {
+            const cards = document.querySelectorAll('.u-card');
+            const track = document.querySelector('.marquee-track');
+            if (track) {
+                track.style.animation = 'scrollMarquee 30s linear infinite';
+            }
+            cards.forEach(card => {
+                card.style.display = 'flex';
+            });
+            document.getElementById('search-input').value = '';
+        }
+        function performSearch() {
+            const val = document.getElementById('search-input').value.toLowerCase().trim();
+            if (!val) {
+                alert("Please enter something to search!");
+                return;
+            }
+            closeSearchModal();
+            
+            // Check if we are on the homepage
+            const menuSection = document.getElementById('menu');
+            const track = document.querySelector('.marquee-track');
+            
+            if (menuSection && track) {
+                menuSection.scrollIntoView({ behavior: 'smooth' });
+                
+                // Stop marquee animation during search
+                track.style.animation = 'none';
+                
+                const cards = document.querySelectorAll('.u-card');
+                let found = false;
+                let seenTitles = new Set();
+                
+                cards.forEach(card => {
+                    const titleEl = card.querySelector('.u-card-title');
+                    if (titleEl) {
+                        const title = titleEl.innerText.toLowerCase();
+                        const isMatch = title.includes(val);
+                        
+                        // If it's a match AND we haven't seen this title yet, show it
+                        if (isMatch && !seenTitles.has(title)) {
+                            card.style.display = 'flex';
+                            seenTitles.add(title);
+                            found = true;
+                        } else {
+                            // Hide duplicates or non-matches
+                            card.style.display = 'none';
+                        }
+                    }
+                });
+                
+                if(!found) {
+                    if (typeof showToast === 'function') {
+                        showToast("No burgers found matching your search!");
+                    } else {
+                        alert("No burgers found matching your search!");
+                    }
+                    // Reset menu if nothing found? Or keep it empty?
+                    // Let's show all unique cards if search is empty (though we checked !val)
+                }
+            } else {
+                // Redirect to index.php with search query
+                window.location.href = 'index.php?search=' + encodeURIComponent(val) + '#menu';
+            }
+        }
+        
+        // Auto-search on page load if ?search= is present
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchParam = urlParams.get('search');
+            if (searchParam && document.getElementById('menu') && document.querySelectorAll('.u-card').length > 0) {
+                setTimeout(() => {
+                    document.getElementById('search-input').value = searchParam;
+                    performSearch();
+                }, 500);
+            }
+        });
+    </script>
+
+
+    <script>
+        function toggleMobileMenu() {
+            const nav = document.querySelector('nav');
+            const icon = document.getElementById('menu-icon');
+            nav.classList.toggle('active');
+            
+            if (nav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            }
+        }
+
+        // Close menu when any nav link is clicked
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                const nav = document.querySelector('nav');
+                const icon = document.getElementById('menu-icon');
+                if (nav.classList.contains('active')) {
+                    nav.classList.remove('active');
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

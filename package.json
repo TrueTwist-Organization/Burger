@@ -2,9 +2,10 @@
   "name": "food-website",
   "version": "1.0.0",
   "description": "Premium Food Website",
-  "main": "index.html",
+  "main": "index.php",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8000 --strictPort",
+    "dev:php": "php -S localhost:8000 router.php",
     "build": "vite build",
     "preview": "vite preview"
   },

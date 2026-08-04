@@ -448,7 +448,7 @@ function proceedToCheckout(isGuest) {
         // Slide away modal
         document.getElementById('cart-flip-container').style.transform = 'translateY(100%)';
         setTimeout(() => {
-            window.location.href = 'checkout.html' + (isGuest ? '?guest=true' : '');
+            window.location.href = 'checkout.php' + (isGuest ? '?guest=true' : '');
         }, 400);
     }, 800);
 }
